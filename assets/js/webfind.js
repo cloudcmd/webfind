@@ -102,9 +102,9 @@ var io;
         }
         
         function createElements(element) {
-            var html    = '<input data-name="webfind-name" placeholder="Name" autofocus>'       +
-                          '<input data-name="webfind-dir" placeholder="Directory">'   +
-                          '<button data-name="webfind-button">Search</button>'        +
+            var html    = '<input data-name="webfind-name" class="webfind-font" placeholder="Name" autofocus>'       +
+                          '<input data-name="webfind-dir" class="webfind-font" placeholder="Directory">'   +
+                          '<button data-name="webfind-button" class="webfind-font">Search</button>'        +
                           '<ul data-name="webfind-result" class="webfind-result"></ul>',
                 
                 submit          = function() {
