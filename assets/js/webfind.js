@@ -76,8 +76,7 @@ var io;
         }
         
         function addListeners(room) {
-            var elementSearch   = document.querySelector('[data-name="webfind-search"]'),
-                elementStop     = document.querySelector('[data-name="webfind-stop"]'),
+            var elementButton   = document.querySelector('[data-name="webfind-button"]'),
                 elementName     = document.querySelector('[data-name="webfind-name"]'),
                 elementDir      = document.querySelector('[data-name="webfind-dir"]'),
                 elementResult   = document.querySelector('[data-name="webfind-result"]'),
@@ -86,12 +85,21 @@ var io;
                     var name    = elementName.value,
                         dir     = elementDir.value;
                     
-                    elementResult.textContent = '';
-                    
-                    socket.emit(CHANNEL, {
-                        name: name,
-                        dir: dir
-                    });
+                    if (elementButton.textContent === 'Stop') {
+                        elementButton.textContent = 'Start';
+                        
+                        socket.emit(CHANNEL, {
+                            stop: true
+                        });
+                    } else {
+                        elementResult.textContent = '';
+                        elementButton.textContent = 'Stop';
+                        
+                        socket.emit(CHANNEL, {
+                            name: name,
+                            dir: dir
+                        });
+                    }
                 },
                 
                 onEnter         = function(event) {
@@ -118,8 +126,12 @@ var io;
                     el = document.createElement('li');
                     el.textContent = data.path;
                     elementResult.appendChild(el);
-                } else if (data.done && !elementResult.childNodes.length)
-                    elementResult.textContent = 'File not found.';
+                } else if (data.done) {
+                    if (!elementResult.childNodes.length)
+                        elementResult.textContent = 'File not found.';
+                    
+                    elementButton.textContent = 'Start';
+                }
             });
             
             socket.on('connect', function() {
@@ -131,10 +143,7 @@ var io;
             });
             
             
-            elementSearch.addEventListener('click', submit);
-            elementStop.addEventListener('click', function() {
-                socket.emit(CHANNEL, {stop: true});
-            });
+            elementButton.addEventListener('click', submit);
             elementName.addEventListener('keydown', onEnter);
             elementDir.addEventListener('keydown', onEnter);
         }
