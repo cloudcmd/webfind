@@ -3,10 +3,10 @@
 }
 
 .webfind-result {
-    list-style: none;
     width: 94%;
-    overflow-y: auto;
     padding: 0;
+    overflow-y: auto;
+    list-style: none;
 }
 
 .webfind-font {
