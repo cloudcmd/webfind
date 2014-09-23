@@ -6,7 +6,7 @@ var io;
     window.webfind = new FindProto();
     
     function FindProto() {
-        var CHANNEL = 'find-data',
+        var CHANNEL     = 'find-data',
             socket;
         
         function Find(element, prefix, callback) {
@@ -76,7 +76,32 @@ var io;
         }
         
         function addListeners(room) {
-            var href            = location.origin,
+            var elementSearch   = document.querySelector('[data-name="webfind-search"]'),
+                elementStop     = document.querySelector('[data-name="webfind-stop"]'),
+                elementName     = document.querySelector('[data-name="webfind-name"]'),
+                elementDir      = document.querySelector('[data-name="webfind-dir"]'),
+                elementResult   = document.querySelector('[data-name="webfind-result"]'),
+                
+                submit          = function() {
+                    var name    = elementName.value,
+                        dir     = elementDir.value;
+                    
+                    elementResult.textContent = '';
+                    
+                    socket.emit(CHANNEL, {
+                        name: name,
+                        dir: dir
+                    });
+                },
+                
+                onEnter         = function(event) {
+                    var ENTER = 13;
+                    
+                    if (event.keyCode === ENTER)
+                        submit();
+                },
+                
+                href            = location.origin,
                 FIVE_SECONDS    = 5000;
                 
             socket = io.connect(href + room, {
@@ -85,7 +110,16 @@ var io;
             });
             
             socket.on(CHANNEL, function(data) {
-                console.log(data)
+                var el;
+                
+                if (data.error)
+                    console.log(data.error);
+                else if (data.path) {
+                    el = document.createElement('li');
+                    el.textContent = data.path;
+                    elementResult.appendChild(el);
+                } else if (data.done && !elementResult.childNodes.length)
+                    elementResult.textContent = 'File not found.';
             });
             
             socket.on('connect', function() {
@@ -95,8 +129,16 @@ var io;
             socket.on('disconnect', function() {
                 console.log('webfind: disconnected\n');
             });
+            
+            
+            elementSearch.addEventListener('click', submit);
+            elementStop.addEventListener('click', function() {
+                socket.emit(CHANNEL, {stop: true});
+            });
+            elementName.addEventListener('keydown', onEnter);
+            elementDir.addEventListener('keydown', onEnter);
         }
-
+        
         return Find;
     }
     

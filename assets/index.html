@@ -2,9 +2,22 @@
 <html>
     <head>
         <title>WebFind</title>
+        <style>
+            .webfind-result {
+                list-style: none;
+            }
+        </style>
     </head>
     <body>
-        <div class="webfind"></div>
+        <div class="webfind">
+            <input data-name="webfind-name" placeholder="Name">
+            <input data-name="webfind-dir" placeholder="Directory">
+            <button data-name="webfind-search">Search</button>
+            <button data-name="webfind-stop">Stop</button>
+            <ul data-name="webfind-result" class="webfind-result">
+            
+            </ul>
+        </div>
         <script src="/webfind/webfind.js"></script>
         <script>
             (function() {
