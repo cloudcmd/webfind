@@ -5,15 +5,11 @@
         jshint      = require('gulp-jshint'),
         recess      = require('gulp-recess'),
         
-        LIB         = 'lib/',
-        LIB_CLIENT  = LIB + 'client/',
-        LIB_SERVER  = LIB + 'server/',
         Src         = [
             '*.js',
             'gulp/**/*.js',
-            LIB + '*.js',
-            LIB_CLIENT + '/*.js',
-            LIB_SERVER + '/**/*.js',
+            'assets/js/*.js',
+            'lib/*.js'
         ];
     
     ['changelog', 'package'].forEach(function(name) {
@@ -29,7 +25,7 @@
     
    
     gulp.task('css', function () {
-        gulp.src('css/*.css')
+        gulp.src('assets/css/*.css')
             .pipe(recess())
             .pipe(recess.reporter())
             .on('error', onError);
