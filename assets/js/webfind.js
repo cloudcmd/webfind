@@ -45,6 +45,7 @@ var io;
                     
                     css     = prefix + join([
                         '/assets/css/style.css',
+                        '/assets/css/webfind.css'
                     ]);
                 
                 load.json(prefix + '/modules.json', function(error, remote) {

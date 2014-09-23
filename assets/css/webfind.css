@@ -1,0 +1,9 @@
+.webfind, .webfind-result {
+    height: 100%;
+}
+
+.webfind-result {
+    list-style: none;
+    width: 94%;
+    overflow-y: auto;
+}
