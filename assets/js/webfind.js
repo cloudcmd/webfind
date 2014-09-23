@@ -6,7 +6,11 @@ var io;
     window.webfind = new FindProto();
     
     function FindProto() {
-        var CHANNEL     = 'find-data',
+        var elementButton,
+            elementName,
+            elementDir,
+            elementResult,
+            CHANNEL         = 'find-data',
             socket;
         
         function Find(element, prefix, callback) {
@@ -25,6 +29,7 @@ var io;
                 el  = element;
             
             load(prefix, function() {
+                createElements(el);
                 addListeners(prefix);
                 
                 if (typeof callback === 'function')
@@ -77,10 +82,30 @@ var io;
         }
         
         function addListeners(room) {
-            var elementButton   = document.querySelector('[data-name="webfind-button"]'),
-                elementName     = document.querySelector('[data-name="webfind-name"]'),
-                elementDir      = document.querySelector('[data-name="webfind-dir"]'),
-                elementResult   = document.querySelector('[data-name="webfind-result"]'),
+            var href            = location.origin,
+                FIVE_SECONDS    = 5000;
+                
+            socket = io.connect(href + room, {
+                'max reconnection attempts' : Math.pow(2, 32),
+                'reconnection limit'        : FIVE_SECONDS
+            });
+            
+            socket.on(CHANNEL, onMessage);
+            
+            socket.on('connect', function() {
+                console.log('webfind: connected\n');
+            });
+            
+            socket.on('disconnect', function() {
+                console.log('webfind: disconnected\n');
+            });
+        }
+        
+        function createElements(element) {
+            var html    = '<input data-name="webfind-name" placeholder="Name">'       +
+                          '<input data-name="webfind-dir" placeholder="Directory">'   +
+                          '<button data-name="webfind-button">Search</button>'        +
+                          '<ul data-name="webfind-result" class="webfind-result"></ul>',
                 
                 submit          = function() {
                     var name    = elementName.value,
@@ -108,45 +133,35 @@ var io;
                     
                     if (event.keyCode === ENTER)
                         submit();
-                },
+                };
+            
+            element.innerHTML = html;
                 
-                href            = location.origin,
-                FIVE_SECONDS    = 5000;
-                
-            socket = io.connect(href + room, {
-                'max reconnection attempts' : Math.pow(2, 32),
-                'reconnection limit'        : FIVE_SECONDS
-            });
-            
-            socket.on(CHANNEL, function(data) {
-                var el;
-                
-                if (data.error)
-                    console.log(data.error);
-                else if (data.path) {
-                    el = document.createElement('li');
-                    el.textContent = data.path;
-                    elementResult.appendChild(el);
-                } else if (data.done) {
-                    if (!elementResult.childNodes.length)
-                        elementResult.textContent = 'File not found.';
-                    
-                    elementButton.textContent = 'Start';
-                }
-            });
-            
-            socket.on('connect', function() {
-                console.log('webfind: connected\n');
-            });
-            
-            socket.on('disconnect', function() {
-                console.log('webfind: disconnected\n');
-            });
-            
+            elementButton   = element.querySelector('[data-name="webfind-button"]');
+            elementName     = element.querySelector('[data-name="webfind-name"]');
+            elementDir      = element.querySelector('[data-name="webfind-dir"]');
+            elementResult   = element.querySelector('[data-name="webfind-result"]');
             
             elementButton.addEventListener('click', submit);
             elementName.addEventListener('keydown', onEnter);
             elementDir.addEventListener('keydown', onEnter);
+        }
+        
+        function onMessage(data) {
+            var el;
+            
+            if (data.error)
+                console.log(data.error);
+            else if (data.path) {
+                el = document.createElement('li');
+                el.textContent = data.path;
+                elementResult.appendChild(el);
+            } else if (data.done) {
+                if (!elementResult.childNodes.length)
+                    elementResult.textContent = 'File not found.';
+                
+                elementButton.textContent = 'Start';
+            }
         }
         
         return Find;
