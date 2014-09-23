@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
     <head>
-        <title>Console</title>
+        <title>WebFind</title>
     </head>
     <body>
-        <div class="find"></div>
-        <script src="/find/find.js"></script>
+        <div class="webfind"></div>
+        <script src="/webfind/webfind.js"></script>
         <script>
             (function() {
                 'use strict';
@@ -15,7 +15,7 @@
                 function load() {
                     window.removeEventListener('load', load);
                     
-                    Console('.find', function() {
+                    Console('.webfind', function() {
                         console.log('find ready')
                     });
                 }

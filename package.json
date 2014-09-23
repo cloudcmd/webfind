@@ -5,9 +5,9 @@
   "description": "Web file finder",
   "homepage": "https://github.com/cloudcmd/find.git",
   "bin": {
-    "webfind": "bin/find.js"
+    "webfind": "bin/webfind.js"
   },
-  "main": "lib/find.js",
+  "main": "lib/webfind.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/cloudcmd/find.git"
