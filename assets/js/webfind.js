@@ -44,7 +44,7 @@ var io;
                     join    = window.join,
                     
                     css     = prefix + join([
-                        '/css/style.css',
+                        '/assets/css/style.css',
                     ]);
                 
                 load.json(prefix + '/modules.json', function(error, remote) {
