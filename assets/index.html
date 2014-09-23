@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Console</title>
+    </head>
+    <body>
+        <div class="find"></div>
+        <script src="/find/find.js"></script>
+        <script>
+            (function() {
+                'use strict';
+                
+                window.addEventListener('load', load);
+                
+                function load() {
+                    window.removeEventListener('load', load);
+                    
+                    Console('.find', function() {
+                        console.log('find ready')
+                    });
+                }
+            })()
+        </script>
+    </body>
+</html>

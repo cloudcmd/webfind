@@ -1,0 +1,33 @@
+{
+  "name": "webfind",
+  "version": "0.1.0",
+  "author": "coderaiser <mnemonic.enemy@gmail.com> (https://github.com/coderaiser)",
+  "description": "Web file finder",
+  "homepage": "https://github.com/cloudcmd/find.git",
+  "bin": {
+    "webfind": "bin/find.js"
+  },
+  "main": "lib/find.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cloudcmd/find.git"
+  },
+  "keywords": [
+    "web",
+    "find",
+    "middleware",
+    "express"
+  ],
+  "dependencies": {
+    "express": "~4.9.0",
+    "findit": "~2.0.0",
+    "glob": "~4.0.5",
+    "join-io": "~1.0.6",
+    "minify": "~1.0.0",
+    "socket.io": "~1.1.0",
+    "spawnify": "~1.2.2",
+    "util-io": "~1.3.0"
+  },
+  "devDependencies": {},
+  "license": "MIT"
+}
