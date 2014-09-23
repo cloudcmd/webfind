@@ -36,12 +36,22 @@ var io;
                     callback();
             });
             
-            return find.bind(null, prefix);
+            return Find;
         }
         
-        function find(prefix, name, dir) {
-            socket.emit(CHANNEL, dir + ':' + name);
-        }
+        Find.setDir    = function(dir) {
+            if (elementDir)
+                elementDir.value = dir;
+            
+            return Find;
+        };
+        
+        Find.setName   = function(name) {
+            if (elementName)
+                elementName.value = name;
+            
+            return Find;
+        };
         
         function load(prefix, callback) {
             loadScript([prefix + '/assets/js/load.js', prefix + '/join/join.js'], function() {
