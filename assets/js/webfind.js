@@ -3,7 +3,7 @@ var $, Util, io;
 (function(window) {
     'use strict';
     
-    window.Find = new FindProto();
+    window.webfind = new FindProto();
     
     function FindProto() {
         var handler,
@@ -26,11 +26,11 @@ var $, Util, io;
             
             if (!callback) {
                 callback    = prefix;
-                prefix      = '/find';
+                prefix      = '/webfind';
             }
             
             if (isString)
-                el  = document.querySelector('.' + prefix);
+                el  = document.querySelector(element);
             else
                 el  = element;
             
@@ -55,7 +55,7 @@ var $, Util, io;
                 
                 load.json(prefix + '/modules.json', function(error, remote) {
                     if (error)
-                        Find.log(error);
+                        console.log(error);
                     else
                         load.series(remote.concat(css), callback);
                 });
@@ -102,11 +102,11 @@ var $, Util, io;
             socket.on(CHANNEL, onMessage);
             
             socket.on('connect', function() {
-                log('find: connected\n');
+                log('webfind: connected\n');
             });
             
             socket.on('disconnect', function() {
-                error('find: disconnected\n');
+                error('webfind: disconnected\n');
             });
             
             handler = getHandler(socket);
