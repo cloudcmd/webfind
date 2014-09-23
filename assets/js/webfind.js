@@ -1,4 +1,4 @@
-var Util, io;
+var io;
 
 (function(window) {
     'use strict';
@@ -6,7 +6,8 @@ var Util, io;
     window.webfind = new FindProto();
     
     function FindProto() {
-        var CHANNEL = 'find-data';
+        var CHANNEL = 'find-data',
+            socket;
         
         function Find(element, prefix, callback) {
             var el,
@@ -24,11 +25,17 @@ var Util, io;
                 el  = element;
             
             load(prefix, function() {
-                addListeners();
+                addListeners(prefix);
                 
                 if (typeof callback === 'function')
                     callback();
             });
+            
+            return find.bind(null, prefix);
+        }
+        
+        function find(prefix, name, dir) {
+            socket.emit(CHANNEL, dir + ':' + name);
         }
         
         function load(prefix, callback) {
@@ -68,16 +75,18 @@ var Util, io;
             });
         }
         
-        function addListeners(jqFind, room) {
+        function addListeners(room) {
             var href            = location.origin,
-                FIVE_SECONDS    = 5000,
+                FIVE_SECONDS    = 5000;
                 
-                socket = io.connect(href + room, {
-                    'max reconnection attempts' : Math.pow(2, 32),
-                    'reconnection limit'        : FIVE_SECONDS
-                });
+            socket = io.connect(href + room, {
+                'max reconnection attempts' : Math.pow(2, 32),
+                'reconnection limit'        : FIVE_SECONDS
+            });
             
-            socket.on(CHANNEL, onMessage);
+            socket.on(CHANNEL, function(data) {
+                console.log(data)
+            });
             
             socket.on('connect', function() {
                 console.log('webfind: connected\n');
@@ -87,11 +96,7 @@ var Util, io;
                 console.log('webfind: disconnected\n');
             });
         }
-        
-        function onMessage(json) {
-            console.log(json);
-        }
-        
+
         return Find;
     }
     
