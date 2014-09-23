@@ -1,31 +1,21 @@
-Console
+WebFind
 =======
 
-Web console used in [Cloud Commander](http://cloudcmd.io).
-
-![Console](https://raw.githubusercontent.com/cloudcmd/console/master/img/console.png "Console")
+Web find used in [Cloud Commander](http://cloudcmd.io).
 
 ## Install
 
-`npm i console-io -g`
+`npm i webfind -g`
 
 ## Use as standalone
 
-Start `console`, go to url `http://localhost:1337`
+Start `webfind`, go to url `http://localhost:1337`
 
 ## API
 
-### Server API
-
-**webconsole(server [,prefix])**
-
-- server    - instance of server
-- prefix    - prefix of console url to use in html
-
-
 ### Client API
 
-**Console(element [, prefix], callback)**
+**webfind(element [, prefix], callback)**
 
 - element   - html element, or selector
 - prefix    - (optional) prefix to url (same as in server)
@@ -33,51 +23,51 @@ Start `console`, go to url `http://localhost:1337`
 
 When prefix set in server and client, you should use same prefix in html.
 For example, if you use prefix "any_prefix" you should connect
-console script in this way:
+webfind script in this way:
 
-`<script src="/any_prefix/console.js"></script>`
+`<script src="/webfind/webfind.js"></script>`
 
-**Console.addShortCuts(shortCuts)**
 
-- shortCuts - object contain big letter and function.
+### Server API
 
-Example: show alert on `Ctrl + A`:
+**webfind(options);**
+
+Could be used as middleware, or for init `WebFind`.
 
 ```js
-Console.addShortCuts({
-    'A': function() {
-        alert('hello');
-    }
-});
+webfind({
+    server: server,/* only one should be passed: */
+    socket: socket,/* server or socket  */
+    online: true, /* default */
+    minify: true, /* default */
+    prefix:'/webfind' /* default */
+})
 ```
 
-**Console.getPromptText()**
+**webfind.middle(options);**
 
-Get text of prompt.
+Middleware function if there is a need of init `socket` in another place.
 
-**Console.setPromptText(text)**
-
-- text - string of new text
-
-Set new text of prompt.
-
-**Console.focus()**
-
-Set focus on Console.
-
+```js
+webfind.middle({
+    prefix: '/webfind', /* default */
+    online: true, /* default */
+    minify: true, /* default */
+})
+```
 
 ## Use as middleware
 
-To use `Console` in your programs you should make local install:
+To use `WebFind` in your programs you should make local install:
 
-`npm i console-io express --save`
+`npm i webfind express --save`
 
 And use it in your program
 
 ```js
 /* server.js */
 
-var webconsole  = require('console-io'),
+var webfind     = require('webfind'),
     http        = require('http'),
     express     = require('express'),
     
@@ -87,7 +77,7 @@ var webconsole  = require('console-io'),
     port        = 1337,
     ip          = '0.0.0.0';
     
-app .use(webconsole({
+app .use(webfind({
         server: server,
         online: true /* load jquery and socket.io from cdn */
     }))
@@ -99,8 +89,8 @@ server.listen(port, ip);
 ```html
 <!-- index.html -->
 
-<div class="console"></div>
-<script src="/console/console.js"></script>
+<div class="webfind"></div>
+<script src="/webfind/webfind.js"></script>
 <script>
     (function() {
         'use strict';
@@ -110,8 +100,8 @@ server.listen(port, ip);
         function load() {
             window.removeEventListener('load', load);
             
-            Console('.console', function() {
-                console.log('console ready')
+            webfind('.webfind', function() {
+                console.log('webfind ready')
             });
         }
     })()
