@@ -20,7 +20,7 @@
     }
     
     function start() {
-        var DIR         = __dirname + '/../',
+        var DIR         = __dirname + '/../assets',
         
         webfind     = require('../'),
         http        = require('http'),
