@@ -1,3 +1,13 @@
+2014.09.24, v0.3.0
+
+fix:
+- (webfind) rm jquery
+- (webfind) set correct dir
+
+feature:
+- (webfind) add minify: false
+
+
 2014.09.23, v0.2.0
 
 feature:
