@@ -10,6 +10,7 @@ var io;
             elementName,
             elementDir,
             elementResult,
+            elementLoad,
             CHANNEL         = 'find-data',
             socket;
         
@@ -113,8 +114,9 @@ var io;
         
         function createElements(element) {
             var html    = '<input data-name="webfind-name" class="webfind-font" placeholder="Name" autofocus>'       +
-                          '<input data-name="webfind-dir" class="webfind-font" placeholder="Directory">'   +
-                          '<button data-name="webfind-button" class="webfind-font">Search</button>'        +
+                          '<input data-name="webfind-dir" class="webfind-font" placeholder="Directory">'    +
+                          '<span data-name="webfind-load" class="webfind-load webfind-hide"></span>'+
+                          '<button data-name="webfind-button" class="webfind-font">Search</button>'         +
                           '<ul data-name="webfind-result" class="webfind-result"></ul>',
                 
                 submit          = function() {
@@ -136,6 +138,8 @@ var io;
                             dir: dir
                         });
                     }
+                    
+                    toggleLoad();
                 },
                 
                 onEnter         = function(event) {
@@ -151,10 +155,35 @@ var io;
             elementName     = element.querySelector('[data-name="webfind-name"]');
             elementDir      = element.querySelector('[data-name="webfind-dir"]');
             elementResult   = element.querySelector('[data-name="webfind-result"]');
+            elementLoad     = element.querySelector('[data-name="webfind-load"]');
+            
+            elementLoad.classList.add('webfind-load-' + (isSVG() ? 'svg' : 'png'));
             
             elementButton.addEventListener('click', submit);
             elementName.addEventListener('keydown', onEnter);
             elementDir.addEventListener('keydown', onEnter);
+        }
+        
+        /**
+         * check SVG SMIL animation support
+         */
+        function isSVG() {
+            var ret, svgNode, name,
+                create  = document.createElementNS,
+                SVG_URL = 'http://www.w3.org/2000/svg';
+            
+            if (create) {
+                create  = create.bind(document);
+                svgNode = create(SVG_URL, 'animate');
+                name    = svgNode.toString();
+                ret     = /SVGAnimate/.test(name);
+            }
+            
+            return ret;
+        }
+        
+        function toggleLoad() {
+            elementLoad.classList.toggle('webfind-hide');
         }
         
         function onMessage(data) {
@@ -171,6 +200,7 @@ var io;
                     elementResult.textContent = 'File not found.';
                 
                 elementButton.textContent = 'Start';
+                toggleLoad();
             }
         }
         

@@ -13,3 +13,23 @@
     font-family : "Droid Sans Mono", "Ubuntu Mono", "Consolas", monospace;
     font-size   : 16px;
 }
+
+.webfind-load {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.webfind-load-svg {
+    background      : url(/img/spinner.svg);
+}
+
+.webfind-load-gif {
+    background      : url(/img/spinner.gif);
+}
+
+.webfind-hide {
+    visibility: hidden;
+}
