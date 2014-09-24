@@ -1,0 +1,10 @@
+2014.09.23, v0.2.0
+
+feature:
+- (jshintrc) add
+- (package) add gulp-jshint, gulp-recess
+- (package) add gulp
+- (webfind) add -v, --v
+- (webfind) add setDir, setName
+- (webfind) add webfind-font
+- (webfind) .webfind-result padding: 0
