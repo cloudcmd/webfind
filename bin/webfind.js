@@ -41,7 +41,8 @@
         
         app .use(webfind({
                 server: server,
-                online: false
+                online: false,
+                minify: false
             }))
             .use(minify({
                 dir: DIR
