@@ -1,4 +1,4 @@
-var io;
+var Util, io;
 
 (function(window) {
     'use strict';
@@ -29,8 +29,8 @@ var io;
             else
                 el  = element;
             
-            load(prefix, function() {
-                createElements(el);
+            load(prefix, function(error, template) {
+                createElements(el, template);
                 addListeners(prefix);
                 
                 if (typeof callback === 'function')
@@ -62,13 +62,17 @@ var io;
                     css     = prefix + join([
                         '/assets/css/style.css',
                         '/assets/css/webfind.css'
-                    ]);
+                    ]),
+                    
+                    loadTemplates = function() {
+                        load(prefix + '/template/webfind.html', callback);
+                    };
                 
                 load.json(prefix + '/modules.json', function(error, remote) {
                     if (error)
                         console.log(error);
                     else
-                        load.series(remote.concat(css), callback);
+                        load.series(remote.concat(css), loadTemplates);
                 });
             });
         }
@@ -112,42 +116,36 @@ var io;
             });
         }
         
-        function createElements(element) {
-            var html    = '<input data-name="webfind-name" class="webfind-font" placeholder="Name" autofocus>'       +
-                          '<input data-name="webfind-dir" class="webfind-font" placeholder="Directory">'    +
-                          '<span data-name="webfind-load" class="webfind-load webfind-hide"></span>'+
-                          '<button data-name="webfind-button" class="webfind-font">Search</button>'         +
-                          '<ul data-name="webfind-result" class="webfind-result"></ul>',
+        function createElements(element, html) {
+            var submit          = function() {
+                var name    = elementName.value,
+                    dir     = elementDir.value;
                 
-                submit          = function() {
-                    var name    = elementName.value,
-                        dir     = elementDir.value;
+                if (elementButton.textContent === 'Stop') {
+                    elementButton.textContent = 'Start';
                     
-                    if (elementButton.textContent === 'Stop') {
-                        elementButton.textContent = 'Start';
-                        
-                        socket.emit(CHANNEL, {
-                            stop: true
-                        });
-                    } else {
-                        elementResult.textContent = '';
-                        elementButton.textContent = 'Stop';
-                        
-                        socket.emit(CHANNEL, {
-                            name: name,
-                            dir: dir
-                        });
-                    }
+                    socket.emit(CHANNEL, {
+                        stop: true
+                    });
+                } else {
+                    elementResult.textContent = '';
+                    elementButton.textContent = 'Stop';
                     
-                    toggleLoad();
-                },
+                    socket.emit(CHANNEL, {
+                        name: name,
+                        dir: dir
+                    });
+                }
                 
-                onEnter         = function(event) {
-                    var ENTER = 13;
-                    
-                    if (event.keyCode === ENTER)
-                        submit();
-                };
+                toggleLoad();
+            },
+            
+            onEnter         = function(event) {
+                var ENTER = 13;
+                
+                if (event.keyCode === ENTER)
+                    submit();
+            };
             
             element.innerHTML = html;
                 
