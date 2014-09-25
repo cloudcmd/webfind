@@ -11,6 +11,9 @@ var Util, io;
             elementDir,
             elementResult,
             elementLoad,
+            
+            TMPL_MAIN,
+            TMPL_FILE,
             CHANNEL         = 'find-data',
             socket;
         
@@ -29,8 +32,9 @@ var Util, io;
             else
                 el  = element;
             
-            load(prefix, function(error, template) {
-                createElements(el, template);
+            load(prefix, function(error, templates) {
+                parseTemplates(templates);
+                createElements(el);
                 addListeners(prefix);
                 
                 if (typeof callback === 'function')
@@ -65,7 +69,13 @@ var Util, io;
                     ]),
                     
                     loadTemplates = function() {
-                        load(prefix + '/template/webfind.html', callback);
+                        var path        = '/template/',
+                            pathTmpl    = prefix + join([
+                                path + 'main.html',
+                                path + 'file.html',
+                            ]);
+                        
+                        load(pathTmpl, callback);
                     };
                 
                 load.json(prefix + '/modules.json', function(error, remote) {
@@ -116,10 +126,16 @@ var Util, io;
             });
         }
         
-        function createElements(element, html) {
+        function createElements(element) {
             var submit          = function() {
                 var name    = elementName.value,
                     dir     = elementDir.value;
+                
+                if (!name)
+                    name = elementName.value = '*';
+                
+                if (!dir)
+                    dir = elementDir.value = '/';
                 
                 if (elementButton.textContent === 'Stop') {
                     elementButton.textContent = 'Start';
@@ -147,7 +163,7 @@ var Util, io;
                     submit();
             };
             
-            element.innerHTML = html;
+            element.innerHTML = TMPL_MAIN;
                 
             elementButton   = element.querySelector('[data-name="webfind-button"]');
             elementName     = element.querySelector('[data-name="webfind-name"]');
@@ -184,6 +200,18 @@ var Util, io;
             elementLoad.classList.toggle('webfind-hide');
         }
         
+        function parseTemplates(templates) {
+            var elMain, elFile,
+                el          = document.createElement('div');
+            el.innerHTML    = templates;
+            
+            elMain      = el.querySelector('[data-name="webfind-template-main"]');
+            elFile      = el.querySelector('[data-name="webfind-template-file"]');
+            
+            TMPL_MAIN   = elMain.innerHTML;
+            TMPL_FILE   = elFile.innerHTML;
+        }
+        
         function onMessage(data) {
             var el;
             
@@ -191,7 +219,14 @@ var Util, io;
                 console.log(data.error);
             else if (data.path) {
                 el = document.createElement('li');
-                el.textContent = data.path;
+                
+                el.innerHTML = Util.render(TMPL_FILE, {
+                    name: data.path,
+                    type: data.type
+                });
+                
+                el.setAttribute('data-name', 'js-' + data.path);
+                
                 elementResult.appendChild(el);
             } else if (data.done) {
                 if (!elementResult.childNodes.length)

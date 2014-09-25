@@ -16,7 +16,9 @@
                 function load() {
                     window.removeEventListener('load', load);
                     
-                    window.vfind = webfind('.webfind');
+                    webfind('.webfind', function() {
+                        console.log('webfind ready');
+                    });
                 }
             })()
         </script>
