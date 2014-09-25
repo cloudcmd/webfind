@@ -107,7 +107,7 @@ var Util, io;
         }
         
         function addListeners(room) {
-            var href            = location.origin,
+            var href            = getHost(),
                 FIVE_SECONDS    = 5000;
                 
             socket = io.connect(href + room, {
@@ -124,6 +124,13 @@ var Util, io;
             socket.on('disconnect', function() {
                 console.log('webfind: disconnected\n');
             });
+        }
+        
+        function getHost() {
+            var l       = location,
+                href    = l.origin || l.protocol + '//' + l.host;
+            
+            return href;
         }
         
         function createElements(element) {
@@ -173,7 +180,7 @@ var Util, io;
             elementResult   = element.querySelector('[data-name="webfind-result"]');
             elementLoad     = element.querySelector('[data-name="webfind-load"]');
             
-            elementLoad.classList.add('webfind-load-' + (isSVG() ? 'svg' : 'png'));
+            elementLoad.classList.add('webfind-load-' + (isSVG() ? 'svg' : 'gif'));
             
             elementButton.addEventListener('click', submit);
             elementName.addEventListener('keydown', onEnter);
