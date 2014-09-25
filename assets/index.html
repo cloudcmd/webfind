@@ -17,6 +17,10 @@
                     window.removeEventListener('load', load);
                     
                     webfind('.webfind', function() {
+                        webfind
+                            .setName('*')
+                            .setDir('/bin');
+                        
                         console.log('webfind ready');
                     });
                 }

@@ -127,7 +127,8 @@ var Util, io;
         }
         
         function createElements(element) {
-            var submit          = function() {
+            var elClear,
+                submit          = function() {
                 var name    = elementName.value,
                     dir     = elementDir.value;
                 
@@ -165,7 +166,8 @@ var Util, io;
             
             element.innerHTML = TMPL_MAIN;
                 
-            elementButton   = element.querySelector('[data-name="webfind-button"]');
+            elementButton   = element.querySelector('[data-name="webfind-button-search"]');
+            elClear         = element.querySelector('[data-name="webfind-button-clear"]');
             elementName     = element.querySelector('[data-name="webfind-name"]');
             elementDir      = element.querySelector('[data-name="webfind-dir"]');
             elementResult   = element.querySelector('[data-name="webfind-result"]');
@@ -176,6 +178,10 @@ var Util, io;
             elementButton.addEventListener('click', submit);
             elementName.addEventListener('keydown', onEnter);
             elementDir.addEventListener('keydown', onEnter);
+            
+            elClear.addEventListener('click', function() {
+                elementResult.textContent = '';
+            });
         }
         
         /**
