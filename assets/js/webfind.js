@@ -6,7 +6,8 @@ var Util, io;
     window.webfind = new FindProto();
     
     function FindProto() {
-        var elementButton,
+        var elementSearch,
+            elementClear,
             elementName,
             elementDir,
             elementResult,
@@ -134,8 +135,7 @@ var Util, io;
         }
         
         function createElements(element) {
-            var elClear,
-                submit          = function() {
+            var submit          = function() {
                 var name    = elementName.value,
                     dir     = elementDir.value;
                 
@@ -145,23 +145,27 @@ var Util, io;
                 if (!dir)
                     dir = elementDir.value = '/';
                 
-                if (elementButton.textContent === 'Stop') {
-                    elementButton.textContent = 'Start';
+                if (elementSearch.textContent === 'Stop') {
+                    elementSearch.textContent = 'Start';
+                    elementClear.disabled = false;
                     
                     socket.emit(CHANNEL, {
                         stop: true
                     });
+                    
+                    hideLoad();
                 } else {
                     elementResult.textContent = '';
-                    elementButton.textContent = 'Stop';
+                    elementSearch.textContent = 'Stop';
+                    elementClear.disabled = true;
                     
                     socket.emit(CHANNEL, {
                         name: name,
                         dir: dir
                     });
+                    
+                    showLoad();
                 }
-                
-                toggleLoad();
             },
             
             onEnter         = function(event) {
@@ -173,8 +177,8 @@ var Util, io;
             
             element.innerHTML = TMPL_MAIN;
                 
-            elementButton   = element.querySelector('[data-name="webfind-button-search"]');
-            elClear         = element.querySelector('[data-name="webfind-button-clear"]');
+            elementSearch   = element.querySelector('[data-name="webfind-button-search"]');
+            elementClear    = element.querySelector('[data-name="webfind-button-clear"]');
             elementName     = element.querySelector('[data-name="webfind-name"]');
             elementDir      = element.querySelector('[data-name="webfind-dir"]');
             elementResult   = element.querySelector('[data-name="webfind-result"]');
@@ -182,11 +186,11 @@ var Util, io;
             
             elementLoad.classList.add('webfind-load-' + (isSVG() ? 'svg' : 'gif'));
             
-            elementButton.addEventListener('click', submit);
+            elementSearch.addEventListener('click', submit);
             elementName.addEventListener('keydown', onEnter);
             elementDir.addEventListener('keydown', onEnter);
             
-            elClear.addEventListener('click', function() {
+            elementClear.addEventListener('click', function() {
                 elementResult.textContent = '';
             });
         }
@@ -209,8 +213,12 @@ var Util, io;
             return ret;
         }
         
-        function toggleLoad() {
-            elementLoad.classList.toggle('webfind-hide');
+        function hideLoad() {
+            elementLoad.classList.add('webfind-hide');
+        }
+        
+        function showLoad() {
+            elementLoad.classList.remove('webfind-hide');
         }
         
         function parseTemplates(templates) {
@@ -245,8 +253,8 @@ var Util, io;
                 if (!elementResult.childNodes.length)
                     elementResult.textContent = 'File not found.';
                 
-                elementButton.textContent = 'Start';
-                toggleLoad();
+                elementSearch.textContent = 'Start';
+                hideLoad();
             }
         }
         
