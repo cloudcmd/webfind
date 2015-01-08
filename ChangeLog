@@ -1,3 +1,11 @@
+2015.01.08, v0.4.3
+
+feature:
+- (gulp) rm changelog, package
+- (package) add rendy
+- (main) add clear
+
+
 2014.09.25, v0.4.2
 
 fix:
