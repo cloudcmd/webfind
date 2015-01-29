@@ -1,7 +1,7 @@
 WebFind
 =======
 
-Web find used in [Cloud Commander](http://cloudcmd.io).
+Find files in browser with help of serverside.
 
 ## Install
 
