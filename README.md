@@ -22,7 +22,7 @@ Start `webfind`, go to url `http://localhost:1337`
 - callback  - function to call after init
 
 When prefix set in server and client, you should use same prefix in html.
-For example, if you use prefix "any_prefix" you should connect
+For example, if you use prefix `/webfind` you should connect
 webfind script in this way:
 
 `<script src="/webfind/webfind.js"></script>`
