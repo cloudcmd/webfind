@@ -1,3 +1,12 @@
+2015.02.11, v0.4.4
+
+fix:
+- docs(readme) any_pre -> webfind
+
+feature:
+- (socket) util-io -> assets
+
+
 2015.01.08, v0.4.3
 
 feature:
