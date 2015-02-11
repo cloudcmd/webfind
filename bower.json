@@ -1,0 +1,19 @@
+{
+  "name": "webfind",
+  "version": "0.4.5",
+  "homepage": "https://github.com/cloudcmd/webfind",
+  "authors": [
+    "coderaiser <mnemonic.enemy@gmail.com>"
+  ],
+  "description": "Web file finder",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "node_modules",
+    "modules"
+  ],
+  "dependencies": {
+    "load": "~1.1.4",
+    "rendy": "~1.0.4"
+  }
+}

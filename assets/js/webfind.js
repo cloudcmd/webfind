@@ -1,4 +1,4 @@
-var Util, io;
+var io;
 
 (function(window) {
     'use strict';
@@ -60,31 +60,49 @@ var Util, io;
         };
         
         function load(prefix, callback) {
-            loadScript([prefix + '/assets/js/load.js', prefix + '/join/join.js'], function() {
-                var load    = window.load,
-                    join    = window.join,
-                    
-                    css     = prefix + join([
-                        '/assets/css/style.css',
-                        '/assets/css/webfind.css'
-                    ]),
-                    
-                    loadTemplates = function() {
-                        var path        = '/template/',
-                            pathTmpl    = prefix + join([
-                                path + 'main.html',
-                                path + 'file.html',
-                            ]);
-                        
-                        load(pathTmpl, callback);
-                    };
-                
-                load.json(prefix + '/modules.json', function(error, remote) {
-                    if (error)
-                        console.log(error);
-                    else
-                        load.series(remote.concat(css), loadTemplates);
+            var scripts = [];
+            
+            if (!window.load)
+                scripts.push(prefix + '/assets/modules/load/load.js');
+            
+            if (!window.join)
+                scripts.push(prefix + '/join/join.js');
+            
+            if (!window.rendy)
+                scripts.push(prefix + '/assets/modules/rendy/lib/rendy.js');
+            
+            if (!scripts.length)
+                after(prefix, callback);
+            else
+                loadScript(scripts, function() {
+                    after(prefix, callback);
                 });
+        }
+        
+        function after(prefix, callback) {
+            var load    = window.load,
+                join    = window.join,
+                
+                css     = prefix + join([
+                    '/assets/css/style.css',
+                    '/assets/css/webfind.css'
+                ]),
+                
+                loadTemplates = function() {
+                    var path        = '/template/',
+                        pathTmpl    = prefix + join([
+                            path + 'main.html',
+                            path + 'file.html',
+                        ]);
+                    
+                    load(pathTmpl, callback);
+                };
+            
+            load.json(prefix + '/modules.json', function(error, remote) {
+                if (error)
+                    console.log(error);
+                else
+                    load.series(remote.concat(css), loadTemplates);
             });
         }
         
@@ -241,7 +259,7 @@ var Util, io;
             else if (data.path) {
                 el = document.createElement('li');
                 
-                el.innerHTML = Util.render(TMPL_FILE, {
+                el.innerHTML = rendy(TMPL_FILE, {
                     name: data.path,
                     type: data.type
                 });

@@ -1,0 +1,33 @@
+2015.01.26, v1.0.4
+
+feature:
+- (rendy) improve speed
+
+
+2015.01.26, v1.0.3
+
+feature:
+- (rendy) speed up in 10 times: rm greedy quantifier
+- (package) should v4.6
+- (package) should v4.4.1
+
+
+2014.12.12, v1.0.2
+
+fix:
+- (util) render: do not remove empty blocks "{{", "}}"
+- (rendy) indexOf -> ~indexOf
+
+feature:
+- (package) v1.0.1
+- (rendy) add expr
+
+
+2014.12.12, v1.0.1
+
+fix:
+- (rendy) indexOf -> ~indexOf
+
+feature:
+- (rendy) add expr
+

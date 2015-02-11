@@ -1,7 +1,10 @@
-(function(window) {
+(function(global) {
     'use strict';
     
-    window.load = new LoadProto();
+    if (typeof module !== 'undefined' && module.exports)
+        module.exports = new LoadProto();
+    else
+        global.load = new LoadProto();
     
     function LoadProto() {
         function load(src, callback) {
@@ -98,7 +101,7 @@
                 if (!error)
                     json = JSON.parse(data);
                 
-                callback(error, json || data);
+                callback(error, json);
             });
         };
         
@@ -108,18 +111,24 @@
             if (!url)
                 callback();
             else
-                load(url, function() {
-                    load.series(urls, callback);
+                load(url, function(error) {
+                    if (error)
+                        callback(error);
+                    else
+                        load.series(urls, callback);
                 });
         };
         
         load.parallel = function(urls, callback) {
             var i       = urls.length,
-                func    = function() {
+                done,
+                func    = function(error) {
                     --i;
                     
-                    if (!i)
-                        callback();
+                    if (!i && !done || error) {
+                        done = true;
+                        callback(error);
+                    }
                 };
                 
             urls.forEach(function(url) {
@@ -152,11 +161,8 @@
                 
                 num    = src.lastIndexOf('/') + 1;
                 sub    = src.substr(src, num);
-                id     = src.replace(sub, '');
-                
-                /* убираем точки */
-                while (id.indexOf('.') > 0)
-                    id = id.replace('.', '-');
+                id     = src.replace(sub, '')
+                            .replace(/\./g, '-');
             }
             
             return id;
@@ -164,4 +170,4 @@
         
         return load;
     }
-})(window);
+})(this);
