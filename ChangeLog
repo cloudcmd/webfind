@@ -1,3 +1,14 @@
+2015.02.11, v0.4.5
+
+fix:
+- (font) add
+- (socket) prevent memory leak
+
+feature:
+- (package) v0.4.4
+- (package) find -> webfind
+
+
 2015.02.11, v0.4.4
 
 fix:
