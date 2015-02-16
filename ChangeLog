@@ -1,3 +1,9 @@
+2015.02.16, v0.5.1
+
+fix:
+- (webfind) sendFile
+
+
 2015.02.11, v0.5.0
 
 feature:
