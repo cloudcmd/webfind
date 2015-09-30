@@ -1,4 +1,5 @@
-var io;
+/* global rendy */
+/* global io */
 
 (function(window) {
     'use strict';
