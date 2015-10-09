@@ -10,25 +10,25 @@
      * render template with data
      *
      * @param templ
-     * @param view
+     * @param data
      */
     function rendy(templ, data) {
-        var str, regExp, expr,
-            result  = templ;
+        var result  = templ;
         
         check(templ, data);
         
         Object
             .keys(data)
             .forEach(function(param) {
-                str     = data[param];
-                expr    = '{{\\s' + param + '\\s}}';
-                regExp  = RegExp(expr, 'g');
-                result  = result.replace(regExp, str);
+                var name    = '{{ ' + param + ' }}',
+                    str     = data[param];
+                
+                while(~result.indexOf(name))
+                    result = result.replace(name, str);
             });
         
         if (~result.indexOf('{{'))
-            result = result.replace(/{{.*}}/g, '');
+            result = result.replace(/{{.*?}}/g, '');
         
         return result;
     }
