@@ -1,3 +1,10 @@
+2016.01.10, v0.5.5
+
+feature:
+- (package) socket.io v1.4.3
+- (package) gulp-jshint v2.0.0
+
+
 2015.10.09, v0.5.4
 
 feature:
