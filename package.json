@@ -22,7 +22,7 @@
     "express"
   ],
   "dependencies": {
-    "express": "~4.13.3",
+    "express": "^4.14.0",
     "findit": "~2.0.0",
     "join-io": "~1.4.1",
     "mollify": "~1.0.6",
