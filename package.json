@@ -27,7 +27,7 @@
     "join-io": "~1.4.1",
     "mollify": "~1.0.6",
     "rendy": "~1.1.0",
-    "socket.io": "~1.4.3"
+    "socket.io": "^1.5.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
