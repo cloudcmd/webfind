@@ -25,7 +25,6 @@ function start() {
     http        = require('http'),
     
     express     = require('express'),
-    mollify     = require('mollify'),
     
     app         = express(),
     server      = http.createServer(app),
@@ -41,10 +40,6 @@ function start() {
     app .use(webfind({
             server: server,
             online: true,
-            minify: false
-        }))
-        .use(mollify({
-            dir: DIR
         }))
         .use(express.static(DIR));
     
@@ -54,7 +49,7 @@ function start() {
 }
 
 function version() {
-    var pack = require('../package.json');
+    const pack = require('../package.json');
     
     console.log('v' + pack.version);
 }
