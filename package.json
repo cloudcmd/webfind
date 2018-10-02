@@ -16,7 +16,7 @@
     "url": "git://github.com/cloudcmd/webfind.git"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   },
   "keywords": [
     "web",
