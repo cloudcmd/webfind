@@ -1,3 +1,14 @@
+2020.04.16, v2.0.1
+
+fix:
+- (webfind) get back join-io
+
+feature:
+- (package) eslint v6.8.0
+- (package) rendy v3.0.1
+- (package) eslint-plugin-node v9.0.1
+
+
 2018.10.02, v2.0.0
 
 feature:
