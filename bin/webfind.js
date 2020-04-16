@@ -2,10 +2,10 @@
 
 'use strict';
 
-var argv        = process.argv,
-    argvLast    = argv.slice().pop();
+const {argv} = process;
+const argvLast = argv.slice().pop();
 
-switch (argvLast) {
+switch(argvLast) {
 case '-v':
     version();
     break;
@@ -19,28 +19,25 @@ default:
 }
 
 function start() {
-    var DIR         = __dirname + '/../assets',
+    const DIR = __dirname + '/../assets';
+    const webfind = require('../');
+    const http = require('http');
+    const express = require('express');
+    const app = express();
+    const server = http.createServer(app);
     
-    webfind     = require('../'),
-    http        = require('http'),
+    const port = process.env.PORT || /* c9           */
+        process.env.app_port || /* nodester     */
+        process.env.VCAP_APP_PORT || /* cloudfoundry */
+        1337;
     
-    express     = require('express'),
-    
-    app         = express(),
-    server      = http.createServer(app),
-    
-    port        =   process.env.PORT            ||  /* c9           */
-                    process.env.app_port        ||  /* nodester     */
-                    process.env.VCAP_APP_PORT   ||  /* cloudfoundry */
-                    1337,
-    
-    ip          =   process.env.IP              ||  /* c9           */
+    const ip = process.env.IP || /* c9           */
                     '0.0.0.0';
     
     app .use(webfind({
-            server: server,
-            online: true,
-        }))
+        server,
+        online: true,
+    }))
         .use(express.static(DIR));
     
     server.listen(port, ip);
